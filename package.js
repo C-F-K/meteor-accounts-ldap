@@ -1,6 +1,6 @@
 Package.describe({
-  name: 'cfk:accounts-ldap',
-  version: '1.1.1',
+  name: 'accounts-ldap-local',
+  version: '1.1.3',
   summary: 'Fork of typ\'s accounts-ldap. Added since forking: reinclude underscore, pubkey encrypt ldap creds',
   git: 'https://github.com/C-F-K/meteor-accounts-ldap',
   documentation: 'README.md'

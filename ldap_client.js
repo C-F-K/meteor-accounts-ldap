@@ -2,13 +2,14 @@
 // customLdapOptions should be passed in if you want to override LDAP_DEFAULTS
 // on any particular call (if you have multiple ldap servers you'd like to connect to)
 // You'll likely want to set the dn value here {dn: "..."}
+
 Meteor.loginWithLDAP = function (user, password, customLdapOptions, callback) {
     // Retrieve arguments as array
     var args = [];
     for (var i = 0; i < arguments.length; i++) {
         args.push(arguments[i]);
     }
-    // Pull username and password
+    // Pull args
     user = args.shift();
     password = args.shift();
 
@@ -19,14 +20,20 @@ Meteor.loginWithLDAP = function (user, password, customLdapOptions, callback) {
     // if args still holds options item, grab it
     if (args.length > 0) customLdapOptions = args.shift(); else customLdapOptions = {};
 
+    // i legitimately do not understand why even gd bother with the above, wtf
+    // you can just check if an arg is undefined what is WRONG with you
+
+    var defaults = {
+        ldap: true,
+        searchBeforeBind: false,
+        ldapOptions: customLdapOptions
+    };
+        
     // Set up loginRequest object
     var loginRequest = _.defaults({
         username: user,
         ldapPass: password
-    }, {
-        ldap: true,
-        ldapOptions: customLdapOptions
-    });
+    }, defaults);
 
     Accounts.callLoginMethod({
         // Call login method with ldap = true

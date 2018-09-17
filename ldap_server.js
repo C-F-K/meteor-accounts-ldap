@@ -1,5 +1,5 @@
 Future = Npm.require('fibers/future');
-encrypt = Npm.require('jsencrypt');
+// encrypt = Npm.require('jsencrypt');
 
 // At a minimum, set up LDAP_DEFAULTS.url and .dn according to
 // your needs. url should appear as 'ldap://your.url.here'
@@ -57,13 +57,11 @@ LDAP.create = function (options) {
  * just return whether or not the user exists.
  */
 LDAP.create.prototype.ldapCheck = function (options, bindAfterFind) {
-
     var self = this;
 
     options = options || {};
 
     if ((options.hasOwnProperty('username') && options.hasOwnProperty('ldapPass')) || !bindAfterFind) {
-
         var ldapAsyncFut = new Future();
 
 
@@ -84,7 +82,6 @@ LDAP.create.prototype.ldapCheck = function (options, bindAfterFind) {
                 url: fullUrl
             });
         }
-
         var retObject = {};
 
         if (options.username && bindAfterFind) {
@@ -178,6 +175,13 @@ LDAP.create.prototype.ldapCheck = function (options, bindAfterFind) {
                 }
             });
         };
+
+        console.log(options);
+
+        // THERE SHOULD BE SOME SHIT HERE 
+        // THAT SETS THE SEARCHDN IF SEARCHBEFOREBIND WAS NOT NULL
+        // I DONT MIND EXTRA WORK BUT I DO MIND WHEN PEOPLE CLAIM TO HAVE IMPLEMENTED SHIT AND ARE STRAIGHT UP LYING
+
         if (self.options.searchDN || bindAfterFind) {
             // Attempt to bind to ldap server with provided info
             client.bind(self.options.searchDN || self.options.dn, self.options.searchCredentials || options.ldapPass, function (err) {
@@ -201,8 +205,9 @@ LDAP.create.prototype.ldapCheck = function (options, bindAfterFind) {
                     });
                 }
             });
-        } else if (options.searchBeforeBind) handleSearchProfile(retObject, bindAfterFind);
-        else if (self.options.dn) {
+        } else if (options.searchBeforeBind) {
+            handleSearchProfile(retObject, bindAfterFind); 
+        } else if (self.options.dn) {
             client.bind(self.options.dn, options.ldapPass, function (err) {
                 try {
                     if (err) {
@@ -249,7 +254,6 @@ Accounts.registerLoginHandler('ldap', function (loginRequest) {
 
     // Call ldapCheck and get response
     var ldapResponse = Accounts.ldapObj.ldapCheck(loginRequest, true);
-
     if (ldapResponse.error) {
         return {
             userId: null,
