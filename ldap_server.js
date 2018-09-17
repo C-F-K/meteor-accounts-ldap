@@ -1,4 +1,5 @@
 Future = Npm.require('fibers/future');
+encrypt = Npm.require('jsencrypt');
 
 // At a minimum, set up LDAP_DEFAULTS.url and .dn according to
 // your needs. url should appear as 'ldap://your.url.here'

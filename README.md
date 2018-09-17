@@ -3,6 +3,7 @@ Meteor Package accounts-ldap
 
 This is inspired by [emgee3's Accounts Ldap for meteor package](https://github.com/emgee3/meteor-accounts-ldap). emgee3's package is a proof of concept - this package is an attempt to move past proof of concept and create something production ready and tested.
 
+***2018-9-17 C-F-K:** Meteor no longer includes underscore by default since 1.7, so I added that as an explicit imply; also adding the ability to encrypt LDAP creds with public-key crypto for transmission between server and client* 
 
 Installation
 ------------
