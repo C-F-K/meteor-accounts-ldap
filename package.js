@@ -1,13 +1,13 @@
 Package.describe({
-  name: 'accounts-ldap-local',
-  version: '1.1.3',
-  summary: 'Fork of typ\'s accounts-ldap. Added since forking: reinclude underscore, pubkey encrypt ldap creds',
+  name: 'cfk:accounts-ldap',
+  version: '1.2',
+  summary: 'Fork of typ\'s accounts-ldap; the code doesn\'t suck this time',
   git: 'https://github.com/C-F-K/meteor-accounts-ldap',
   documentation: 'README.md'
 });
 
 Npm.depends({
-  jsencrypt: '3.0.0-rc.1'
+//   jsencrypt: '3.0.0-rc.1'
 });
 
 Package.onUse(function(api) {
@@ -20,7 +20,8 @@ Package.onUse(function(api) {
   api.imply('accounts-base', ['client', 'server']);
   api.imply('accounts-password', ['client', 'server']);
   api.imply('underscore', ['client', 'server']);
-  api.imply('session', 'client');
+  
+  api.use('session', 'client');
 
   api.use('check');
 
