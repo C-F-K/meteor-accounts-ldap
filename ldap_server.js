@@ -28,14 +28,14 @@ publicKey = key.exportKey('public');
 console.log(publicKey);
 const Crypto = new Mongo.Collection('crypto');
 Crypto.update(
-    { _id: 'vpn-control' },
+    { _id: 'accounts-ldap' },
     { public: { key: publicKey } },
     { upsert: true }
 );
 
 Meteor.startup(() => {
     Meteor.publish('crypto',() => {
-        return Crypto.find({});
+        return Crypto.find({ _id: 'accounts-ldap' });
     })
 });
 
