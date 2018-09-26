@@ -1,6 +1,6 @@
 Package.describe({
   name: 'cfk:accounts-ldap',
-  version: '1.4.3',
+  version: '1.4.5',
   summary: 'A hopefully generic and secure package for LDAP auth',
   git: 'https://github.com/C-F-K/meteor-accounts-ldap',
   documentation: 'README.md'

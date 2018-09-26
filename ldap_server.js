@@ -17,7 +17,8 @@ LDAP_DEFAULTS = {
     search: '(objectclass=*)',
     ldapsCertificate: false,
     customProps: null,
-    customProfileFunc: null
+    customProfileFunc: null,
+    customSearchAttributes: []
 };
 LDAP = {};
 
@@ -146,7 +147,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                         scope: 'sub',
                         sizeLimit: 1,
                         paged: true,
-                        attributes: 'dn',
+                        attributes: this.options.customSearchAttributes,
                         filter: getFilterFromSearchObject(request.ldapOptions.searchBeforeBind)
                     }
                     this.ldapClient.search(this.options.base, searchOpts, (err,res) => {
@@ -286,7 +287,7 @@ Accounts.registerLoginHandler('ldap', function (loginRequest) {
         // Otherwise create user if option is set
         else if (Accounts.ldapObj.options.createNewUser) {
             var userObject = {
-                username: ldapResponse.username,
+                username: ldapResponse.username.toLowerCase(),
             };
 
             if (Accounts.ldapObj.options.customProps) {
