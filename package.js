@@ -1,6 +1,6 @@
 Package.describe({
   name: 'cfk:accounts-ldap',
-  version: '1.4.1',
+  version: '1.4.2',
   summary: 'Fork of typ\'s accounts-ldap; the code doesn\'t suck this time',
   git: 'https://github.com/C-F-K/meteor-accounts-ldap',
   documentation: 'README.md'

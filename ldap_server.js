@@ -158,7 +158,6 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                         } else {
                             res.on('searchEntry',entry => {
                                 bound = true;
-                                console.log(entry.object);
                                 bindDN = entry.object.dn;
                                 if (request.ldapOptions.customProfileFunc) {
                                     this.profileBones = request.ldapOptions.customProfileFunc(entry.object);
