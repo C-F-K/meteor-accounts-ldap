@@ -25,7 +25,6 @@ LDAP = {};
 const key = new NodeRSA({ b: 1024 });
 const keypair = key.generateKeyPair();
 publicKey = key.exportKey('public');
-console.log(publicKey);
 const Crypto = new Mongo.Collection('crypto');
 Crypto.update(
     { _id: 'accounts-ldap' },
