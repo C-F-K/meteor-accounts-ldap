@@ -140,7 +140,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                     console.error("can't bind with supplied search creds");
                     console.error(err);
                     /* Future resolves more than once error? */
-                    ldapAsyncFut.throw(err);
+                    ldapAsyncFut.throw(new Meteor.Error(JSON.stringify(err)));
                 } else {
                     let searchOpts = {
                         scope: 'sub',
@@ -152,7 +152,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                     this.ldapClient.search(this.options.base, searchOpts, (err,res) => {
                         if (err) {
                           /* Future resolves more than once error? */
-                            ldapAsyncFut.throw(err);
+                            ldapAsyncFut.throw(new Meteor.Error(JSON.stringify(err)));
                         } else {
                             res.on('searchEntry',entry => {
                                 bound = true;
@@ -166,7 +166,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                             res.on('error', err => {
                                 console.error("ldap search error:");
                                 console.error(err);
-                                ldapAsyncFut.throw(err);
+                                ldapAsyncFut.throw(new Meteor.Error(JSON.stringify(err)));
                             });
                             res.on('end', result => {
                                 console.log("searchBeforeBind complete");
@@ -214,13 +214,11 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
 
 LDAP.create.prototype.loginWithDN = function (ldapAsyncFut, bindDN, request) {
     if (!bindDN) {
-        ldapAsyncFut.throw({
-            error: new Meteor.Error(500, "No bind DN on which to authenticate")
-        });
+        ldapAsyncFut.throw(new Meteor.Error(500, "No bind DN on which to authenticate"));
     }
     this.ldapClient.bind(bindDN, request.ldapPass, err => {
         if (err) {
-            ldapAsyncFut.throw(err);
+            ldapAsyncFut.throw(new Meteor.Error(JSON.stringify(err)));
         } else {
             ldapAsyncFut.return({
                 username: request.username
