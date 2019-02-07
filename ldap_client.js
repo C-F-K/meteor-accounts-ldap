@@ -1,7 +1,7 @@
 const key = new NodeRSA({ b: 1024 });
 const Crypto = new Mongo.Collection('crypto');
-Meteor.startup(() => {
-    Meteor.subscribe('crypto',() => {
+Meteor.startup(function() {
+    Meteor.subscribe('crypto',function() {
         Session.set('publicKey',Crypto.findOne({ _id: 'accounts-ldap' }));
         key.importKey(Session.get('publicKey').public.key,'public');
     });

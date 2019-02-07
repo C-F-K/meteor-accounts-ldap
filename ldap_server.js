@@ -93,6 +93,7 @@ LDAP.create = function (options) {
     const ldapClient = this.options.url.indexOf('ldaps://') === 0 ? 
         MeteorWrapperLdapjs.createClient({
             url: fullUrl,
+            reconnect: true,
             tlsOptions: {
                 ca: [this.options.ldapsCertificate]
             }
@@ -139,9 +140,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                     console.error("can't bind with supplied search creds");
                     console.error(err);
                     /* Future resolves more than once error? */
-                    ldapAsyncFut.throw({
-                        error: err
-                    });
+                    ldapAsyncFut.throw(err);
                 } else {
                     let searchOpts = {
                         scope: 'sub',
@@ -153,9 +152,7 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                     this.ldapClient.search(this.options.base, searchOpts, (err,res) => {
                         if (err) {
                           /* Future resolves more than once error? */
-                            ldapAsyncFut.throw({
-                                error: err
-                            });
+                            ldapAsyncFut.throw(err);
                         } else {
                             res.on('searchEntry',entry => {
                                 bound = true;
@@ -169,22 +166,20 @@ LDAP.create.prototype.ldapCheck = function (request = {}) {
                             res.on('error', err => {
                                 console.error("ldap search error:");
                                 console.error(err);
-                                ldapAsyncFut.throw({
-                                    error: err
-                                });
+                                ldapAsyncFut.throw(err);
                             });
                             res.on('end', result => {
                                 console.log("searchBeforeBind complete");
                                 console.log("status: " + result.status);
+                                /*
                                 this.ldapClient.unbind(err => {
                                     if (err) {
                                         console.error(err);
                                     }
-                                });
+                                }); 
+                                */
                                 if (!bound) {
-                                    ldapAsyncFut.throw({
-                                        error: new Meteor.Error(401, "user not known in LDAP")
-                                    });
+                                    ldapAsyncFut.throw(new Meteor.Error(401, "user not known in LDAP"));
                                 }
                             });
                         }
@@ -225,9 +220,7 @@ LDAP.create.prototype.loginWithDN = function (ldapAsyncFut, bindDN, request) {
     }
     this.ldapClient.bind(bindDN, request.ldapPass, err => {
         if (err) {
-            ldapAsyncFut.throw({
-                error: err
-            });
+            ldapAsyncFut.throw(err);
         } else {
             ldapAsyncFut.return({
                 username: request.username
